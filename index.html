@@ -1,117 +1,104 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Para ti, Rosbely 💖</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f8c9d4;
-      margin: 0;
-      padding: 0;
-      text-align: center;
+    :root{--bg1:#ffebf0;--accent:#d6336c}
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:Arial,Helvetica,sans-serif;
+      background:linear-gradient(135deg,var(--bg1),#f7ccd6);
+      color:#111;
     }
-    header {
-      margin: 20px;
+    /* LOGIN */
+    #login{
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      padding:24px;
     }
-    h1 {
-      color: #d6336c;
+    .card{
+      background:#fff; border-radius:14px; padding:22px; max-width:460px; width:100%;
+      box-shadow:0 8px 30px rgba(0,0,0,0.12); text-align:center;
     }
-    .mensaje {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
-      line-height: 1.6;
-      font-size: 18px;
+    .card h2{margin:0 0 10px;color:var(--accent)}
+    .card p{margin:0 0 16px; color:#333}
+    .inputs{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+    input[type="text"], input[type="date"]{
+      padding:10px 12px;border-radius:8px;border:1px solid #ddd;font-size:15px;
     }
-    .galeria {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 20px 0;
+    button.primary{
+      margin-top:10px;padding:10px 14px;border-radius:8px;border:0;background:var(--accent);
+      color:#fff;font-weight:600;cursor:pointer;font-size:15px;
     }
-    .galeria img {
-      width: 220px;
-      border-radius: 10px;
-      box-shadow: 0px 4px 6px rgba(0,0,0,0.3);
+    button.primary:active{transform:translateY(1px)}
+    #error{color:#b00020;margin-top:10px;display:none}
+
+    /* CONTENIDO */
+    #contenido{display:none;padding:24px;}
+    header.site{
+      text-align:center;margin-bottom:14px;
     }
-    audio {
-      margin: 20px;
+    header.site h1{color:var(--accent);margin:6px 0}
+    header.site .aniversario{color:#444;margin-top:4px;font-weight:600}
+
+    .audioWrap{display:flex;justify-content:center; margin:10px 0}
+    #fixMusic{display:none;color:var(--accent);cursor:pointer;font-weight:700;margin-top:8px}
+
+    .galeria{
+      display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:18px 0;
+    }
+    .galeria img{
+      width:220px;height:auto;border-radius:10px;object-fit:cover;box-shadow:0 6px 18px rgba(0,0,0,0.12)
     }
 
-    /* Login */
-    #login {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+    .mensaje{
+      max-width:900px;margin:18px auto;padding:20px;background:#fff;border-radius:12px;
+      box-shadow:0 8px 24px rgba(0,0,0,0.08);font-size:18px;line-height:1.6;color:#222;
     }
-    #login input {
-      padding: 10px;
-      margin: 5px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-    #login button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      background: #d6336c;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    #login button:hover {
-      background: #a61e4d;
-    }
-    #error {
-      color: red;
-      margin-top: 10px;
-      display: none;
-    }
-    #contenido {
-      display: none;
+
+    @media(max-width:640px){
+      .card{padding:16px}
+      .galeria img{width:48vw}
+      .mensaje{padding:14px;font-size:16px}
     }
   </style>
 </head>
 <body>
 
-  <!-- Pantalla de login -->
-  <div id="login">
-    <h2>💖 Ingresa para ver tu sorpresa 💖</h2>
-    <p>Coloca tu <strong>primer nombre</strong>, tu <strong>apellido</strong> y <strong>nuestra fecha de aniversario</strong>.</p>
-    
-    <input type="text" id="nombre" placeholder="Tu nombre">
-    <input type="text" id="apellido" placeholder="Tu apellido">
-    <input type="date" id="fecha">
-    <br>
-    <button onclick="verificar()">Entrar</button>
-    
-    <p id="error">❌ Datos incorrectos, intenta de nuevo.</p>
-  </div>
+  <!-- LOGIN -->
+  <main id="login">
+    <div class="card" role="region" aria-label="Acceso a la sorpresa">
+      <h2>💖 Ingresa para ver tu sorpresa 💖</h2>
+      <p>Coloca tu <strong>primer nombre</strong>, tu <strong>apellido</strong> y nuestra <strong>fecha de aniversario</strong>.</p>
 
-  <!-- Contenido romántico -->
-  <div id="contenido">
-    <header>
+      <div class="inputs" aria-hidden="false">
+        <input id="nombre" type="text" placeholder="Tu nombre (ej. Rosbely)" autocomplete="given-name" />
+        <input id="apellido" type="text" placeholder="Tu apellido (ej. Briceño)" autocomplete="family-name" />
+        <input id="fecha" type="date" />
+        <button class="primary" id="btnEntrar" onclick="verificar()">Entrar</button>
+      </div>
+
+      <p id="error" role="alert">❌ Datos incorrectos, intenta de nuevo.</p>
+    </div>
+  </main>
+
+  <!-- CONTENIDO -->
+  <section id="contenido" aria-hidden="true">
+    <header class="site">
       <h1>Para ti, Rosbely 💕</h1>
-      <audio id="musica" controls autoplay loop muted>
-        <source src="musica/cancion.mp3" type="audio/mpeg">
-        Tu navegador no soporta el audio.
-      </audio>
-      <p id="fixMusic" onclick="activarMusica()" style="display:none; cursor:pointer; color:#d6336c; font-weight:bold;">
-        🎶 Si la música no suena, haz clic aquí 🎶
-      </p>
+      <div class="aniversario">Nuestra fecha de aniversario: <strong>03/10/2023</strong></div>
     </header>
 
-    <div class="galeria">
+    <div class="audioWrap">
+      <audio id="musica" controls autoplay loop muted preload="auto">
+        <source src="musica/cancion.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio.
+      </audio>
+    </div>
+    <div id="fixMusic" onclick="activarMusica()">🎶 Si la música no suena, haz clic aquí 🎶</div>
+
+    <div class="galeria" aria-label="Galería de fotos">
       <img src="imagenes/foto1.jpg" alt="Foto 1">
       <img src="imagenes/foto2.jpg" alt="Foto 2">
       <img src="imagenes/foto3.jpg" alt="Foto 3">
@@ -119,56 +106,64 @@
       <img src="imagenes/foto5.jpg" alt="Foto 5">
     </div>
 
-    <div class="mensaje">
+    <article class="mensaje" aria-label="Mensaje romántico">
       <h2>💌 Para ti, Rosbely 💌</h2>
-      <p>
-        Mi niña, te amo muchísimo. Estoy súper enamorado de ti y muy feliz, orgulloso de lo que hemos logrado juntos como pareja. 
-        Ya casi son dos años a tu lado, compartiendo momentos inolvidables: nuestras citas, las salidas, las películas a la distancia, 
-        los instantes a solas, los helados, las bromas y también los momentos más románticos e íntimos.
-      </p>
-      <p>
-        De verdad me sorprende que, aun después de todo este tiempo, sigo locamente enamorado de ti y de esa carita hermosa. 
-        Aunque tengamos altos y bajos, quiero una vida entera a tu lado, disfrutar muchas aventuras, vivir locuras, 
-        diversiones, buenos y malos momentos, pero siempre contigo.
-      </p>
-      <p>
-        <strong>Rosbely, te amo con todo mi corazón.</strong> 
-        Gracias por acompañarme en este camino; espero que podamos seguir compartiendo mucho más tiempo juntos 
-        y construyendo nuestro amor cada día.
-      </p>
-    </div>
-  </div>
+      <p>Mi niña, te amo muchísimo. Estoy súper enamorado de ti y muy feliz, orgulloso de lo que hemos logrado juntos como pareja. Ya casi son dos años a tu lado, compartiendo momentos inolvidables: nuestras citas, las salidas, las películas a la distancia, los instantes a solas, los helados, las bromas y también los momentos más románticos e íntimos.</p>
+      <p>De verdad me sorprende que, aun después de todo este tiempo, sigo locamente enamorado de ti y de esa carita hermosa. Aunque tengamos altos y bajos, quiero una vida entera a tu lado, disfrutar muchas aventuras, vivir locuras, diversiones, buenos y malos momentos, pero siempre contigo.</p>
+      <p><strong>Rosbely, te amo con todo mi corazón.</strong> Gracias por acompañarme en este camino; espero que podamos seguir compartiendo mucho más tiempo juntos y construyendo nuestro amor cada día.</p>
+    </article>
+  </section>
 
-  <script>
-    function verificar() {
-      const nombre = document.getElementById("nombre").value.trim().toLowerCase();
-      const apellido = document.getElementById("apellido").value.trim().toLowerCase();
-      const fecha = document.getElementById("fecha").value;
+<script>
+  // Normaliza cadenas: quita tildes y espacios, pasa a minúsculas
+  function normalizeStr(s){
+    if(!s) return "";
+    return s.trim().toLowerCase()
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g,''); // quita diacríticos
+  }
 
-      const nombreCorrecto = "rosbely";
-      const apellidoCorrecto = "briceño";
-      const fechaCorrecta = "2023-10-03";
+  function verificar(){
+    const nombre = normalizeStr(document.getElementById('nombre').value);
+    const apellido = normalizeStr(document.getElementById('apellido').value);
+    const fecha = document.getElementById('fecha').value;
 
-      if (nombre === nombreCorrecto && apellido === apellidoCorrecto && fecha === fechaCorrecta) {
-        document.getElementById("login").style.display = "none";
-        document.getElementById("contenido").style.display = "block";
+    const nombreCorrecto = normalizeStr("Rosbely");   // "rosbely"
+    const apellidoCorrecto = normalizeStr("Briceño"); // "briceno"
+    const fechaCorrecta = "2023-10-03"; // formato AAAA-MM-DD
 
-        const audio = document.getElementById("musica");
-        audio.muted = false;
-        audio.play().catch(() => {
-          document.getElementById("fixMusic").style.display = "block";
-        });
-      } else {
-        document.getElementById("error").style.display = "block";
-      }
-    }
+    if(nombre === nombreCorrecto && apellido === apellidoCorrecto && fecha === fechaCorrecta){
+      document.getElementById('login').style.display = 'none';
+      const cont = document.getElementById('contenido');
+      cont.style.display = 'block';
+      cont.setAttribute('aria-hidden','false');
 
-    function activarMusica() {
-      const audio = document.getElementById("musica");
+      const audio = document.getElementById('musica');
       audio.muted = false;
-      audio.play();
-      document.getElementById("fixMusic").style.display = "none";
+      audio.play().catch(err => {
+        console.warn('Autoplay bloqueado:', err);
+        document.getElementById('fixMusic').style.display = 'block';
+      });
+    } else {
+      const err = document.getElementById('error');
+      err.style.display = 'block';
+      setTimeout(()=> err.style.display='none', 4500);
     }
-  </script>
+  }
+
+  function activarMusica(){
+    const audio = document.getElementById('musica');
+    audio.muted = false;
+    audio.play().catch(e => console.warn('Play error:', e));
+    document.getElementById('fixMusic').style.display = 'none';
+  }
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){
+      const visibleLogin = document.getElementById('login').style.display !== 'none';
+      if(visibleLogin) verificar();
+    }
+  });
+</script>
 </body>
 </html>
