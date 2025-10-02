@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Para ti, Rosbely 💖</title>
+  <style>
+    :root{--bg1:#ffebf0;--accent:#d6336c}
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:Arial,Helvetica,sans-serif;
+      background:linear-gradient(135deg,var(--bg1),#f7ccd6);
+      color:#111;
+      overflow-x:hidden;
+    }
+    /* LOGIN */
+    #login{
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      padding:24px;
+    }
+    .card{
+      background:#fff; border-radius:14px; padding:22px; max-width:460px; width:100%;
+      box-shadow:0 8px 30px rgba(0,0,0,0.12); text-align:center;
+    }
+    .card h2{margin:0 0 10px;color:var(--accent)}
+    .card p{margin:0 0 16px; color:#333}
+    .inputs{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+    input[type="text"], input[type="date"]{
+      padding:10px 12px;border-radius:8px;border:1px solid #ddd;font-size:15px;
+    }
+    button.primary{
+      margin-top:10px;padding:10px 14px;border-radius:8px;border:0;background:var(--accent);
+      color:#fff;font-weight:600;cursor:pointer;font-size:15px;
+    }
+    button.primary:active{transform:translateY(1px)}
+    #error{color:#b00020;margin-top:10px;display:none}
+
+    /* CONTENIDO */
+    #contenido{display:none;padding:24px;}
+    header.site{
+      text-align:center;margin-bottom:14px;
+    }
+    header.site h1{color:var(--accent);margin:6px 0}
+    header.site .aniversario{color:#444;margin-top:4px;font-weight:600}
+
+    .audioWrap{display:none}
+    #fixMusic{display:none;color:var(--accent);cursor:pointer;font-weight:700;margin:12px auto;text-align:center}
+
+    /* MENSAJE CON FOTOS ALREDEDOR */
+    .mensajeWrap {
+      position: relative;
+      max-width: 900px;
+      margin: 40px auto;
+    }
+    .mensaje {
+      position: relative;
+      z-index: 2;
+      padding:20px;
+      background:#fff;
+      border-radius:12px;
+      box-shadow:0 8px 24px rgba(0,0,0,0.08);
+      font-size:18px;
+      line-height:1.6;
+      color:#222;
+    }
+    .fotosDecorativas img {
+      position: absolute;
+      width:120px;
+      height:120px;
+      object-fit:cover;
+      border-radius:12px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.12);
+      transform: rotate(-5deg);
+      z-index: 1;
+    }
+    /* Posiciones alrededor */
+    .fotosDecorativas img:nth-child(1){ top:-40px; left:-40px; }
+    .fotosDecorativas img:nth-child(2){ top:-40px; right:-40px; }
+    .fotosDecorativas img:nth-child(3){ bottom:-40px; left:-40px; }
+    .fotosDecorativas img:nth-child(4){ bottom:-40px; right:-40px; }
+    .fotosDecorativas img:nth-child(5){ top:20%; left:-70px; }
+    .fotosDecorativas img:nth-child(6){ top:40%; left:-80px; }
+    .fotosDecorativas img:nth-child(7){ top:60%; left:-60px; }
+    .fotosDecorativas img:nth-child(8){ top:20%; right:-70px; }
+    .fotosDecorativas img:nth-child(9){ top:40%; right:-80px; }
+    .fotosDecorativas img:nth-child(10){ top:60%; right:-60px; }
+    .fotosDecorativas img:nth-child(11){ top:-50px; left:30%; }
+    .fotosDecorativas img:nth-child(12){ bottom:-50px; left:25%; }
+    .fotosDecorativas img:nth-child(13){ top:-50px; right:30%; }
+    .fotosDecorativas img:nth-child(14){ bottom:-50px; right:25%; }
+    .fotosDecorativas img:nth-child(15){ top:50%; left:calc(50% - 60px); }
+
+    /* CORAZONES FLOTANDO */
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      color: #d6336c;
+      font-size: 24px;
+      animation: floatUp 6s linear forwards;
+      opacity: 0.8;
+      z-index: 9999;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity:1; }
+      100% { transform: translateY(-120vh) scale(1.5); opacity:0; }
+    }
+
+    @media(max-width:640px){
+      .card{padding:16px}
+      .mensaje{padding:14px;font-size:16px}
+      .fotosDecorativas img{width:80px;height:80px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <main id="login">
+    <div class="card" role="region" aria-label="Acceso a la sorpresa">
+      <h2>💖 Ingresa para ver tu sorpresa 💖</h2>
+      <p>Coloca tu <strong>primer nombre</strong>, tu <strong>apellido</strong> y nuestra <strong>fecha de aniversario</strong>.</p>
+
+      <div class="inputs" aria-hidden="false">
+        <input id="nombre" type="text" placeholder="Tu nombre (ej. Rosbely)" autocomplete="given-name" />
+        <input id="apellido" type="text" placeholder="Tu apellido (ej. Briceño)" autocomplete="family-name" />
+        <input id="fecha" type="date" />
+        <button class="primary" id="btnEntrar" onclick="verificar()">Entrar</button>
+      </div>
+
+      <p id="error" role="alert">❌ Datos incorrectos, intenta de nuevo.</p>
+    </div>
+  </main>
+
+  <!-- CONTENIDO -->
+  <section id="contenido" aria-hidden="true">
+    <header class="site">
+      <h1>Para ti, Rosbely 💕</h1>
+      <div class="aniversario">Nuestra fecha de aniversario: <strong>03/10/2023</strong></div>
+    </header>
+
+    <!-- AUDIO (oculto, se maneja por JS) -->
+    <div class="audioWrap">
+      <audio id="musica" autoplay loop preload="auto">
+        <source src="musica/cancion.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio.
+      </audio>
+    </div>
+    <div id="fixMusic" onclick="activarMusica()">🎶 Si la música no suena, haz clic aquí 🎶</div>
+
+    <!-- MENSAJE CON 15 FOTOS ALREDEDOR -->
+    <div class="mensajeWrap">
+      <div class="fotosDecorativas">
+        <img src="imagenes/foto1.jpg" alt="Foto 1">
+        <img src="imagenes/foto2.jpg" alt="Foto 2">
+        <img src="imagenes/foto3.jpg" alt="Foto 3">
+        <img src="imagenes/foto4.jpg" alt="Foto 4">
+        <img src="imagenes/foto5.jpg" alt="Foto 5">
+        <img src="imagenes/foto6.jpg" alt="Foto 6">
+        <img src="imagenes/foto7.jpg" alt="Foto 7">
+        <img src="imagenes/foto8.jpg" alt="Foto 8">
+        <img src="imagenes/foto9.jpg" alt="Foto 9">
+        <img src="imagenes/foto10.jpg" alt="Foto 10">
+        <img src="imagenes/foto11.jpg" alt="Foto 11">
+        <img src="imagenes/foto12.jpg" alt="Foto 12">
+        <img src="imagenes/foto13.jpg" alt="Foto 13">
+        <img src="imagenes/foto14.jpg" alt="Foto 14">
+        <img src="imagenes/foto15.jpg" alt="Foto 15">
+      </div>
+      <article class="mensaje" aria-label="Mensaje romántico">
+        <h2>💌 Para ti, Rosbely 💌</h2>
+        <p>Mi niña, te amo muchísimo. Estoy súper enamorado de ti y muy feliz, orgulloso de lo que hemos logrado juntos como pareja. Ya casi son dos años a tu lado, compartiendo momentos inolvidables: nuestras citas, las salidas, las películas a la distancia, los instantes a solas, los helados, las bromas y también los momentos más románticos e íntimos.</p>
+        <p>De verdad me sorprende que, aun después de todo este tiempo, sigo locamente enamorado de ti y de esa carita hermosa. Aunque tengamos altos y bajos, quiero una vida entera a tu lado, disfrutar muchas aventuras, vivir locuras, diversiones, buenos y malos momentos, pero siempre contigo.</p>
+        <p><strong>Rosbely, te amo con todo mi corazón.</strong> Gracias por acompañarme en este camino; espero que podamos seguir compartiendo mucho más tiempo juntos y construyendo nuestro amor cada día.</p>
+      </article>
+    </div>
+  </section>
+
+<script>
+  function normalizeStr(s){
+    if(!s) return "";
+    return s.trim().toLowerCase()
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g,'');
+  }
+
+  function verificar(){
+    const nombre = normalizeStr(document.getElementById('nombre').value);
+    const apellido = normalizeStr(document.getElementById('apellido').value);
+    const fecha = document.getElementById('fecha').value;
+
+    const nombreCorrecto = normalizeStr("Rosbely");
+    const apellidoCorrecto = normalizeStr("Briceño");
+    const fechaCorrecta = "2023-10-03";
+
+    if(nombre === nombreCorrecto && apellido === apellidoCorrecto && fecha === fechaCorrecta){
+      document.getElementById('login').style.display = 'none';
+      const cont = document.getElementById('contenido');
+      cont.style.display = 'block';
+      cont.setAttribute('aria-hidden','false');
+
+      const audio = document.getElementById('musica');
+      audio.play().catch(err => {
+        console.warn('Autoplay bloqueado:', err);
+        document.getElementById('fixMusic').style.display = 'block';
+      });
+    } else {
+      const err = document.getElementById('error');
+      err.style.display = 'block';
+      setTimeout(()=> err.style.display='none', 4500);
+    }
+  }
+
+  function activarMusica(){
+    const audio = document.getElementById('musica');
+    audio.play().catch(e => console.warn('Play error:', e));
+    document.getElementById('fixMusic').style.display = 'none';
+  }
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){
+      const visibleLogin = document.getElementById('login').style.display !== 'none';
+      if(visibleLogin) verificar();
+    }
+  });
+
+  // Corazones flotando
+  function crearCorazon(){
+    const corazon = document.createElement("div");
+    corazon.classList.add("heart");
+    corazon.innerHTML = "💖";
+    corazon.style.left = Math.random() * 100 + "vw";
+    corazon.style.fontSize = (20 + Math.random()*20) + "px";
+    document.body.appendChild(corazon);
+    setTimeout(()=> corazon.remove(), 6000);
+  }
+  setInterval(crearCorazon, 1200);
+</script>
+</body>
+</html>
